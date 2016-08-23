@@ -194,7 +194,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //SQLiteDatabase db = this.getReadableDatabase();
         cursor = myDataBase.query(TABLE_TRAVELPHRASES, new String[]{KEY_ID, CATEGORY, HOME_PHRASE, TRAVEL_PHRASE}, null, null, null, null, null);
-        //cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -207,10 +206,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 items.add(travelPhraseData);
             } while (cursor.moveToNext());
         }
+        return items;
+    }
 
+    // Getting travel categories
+    ArrayList<TravelCategoryData> getAllCategoryData() {
+
+        TravelCategoryData travelCategoryData;
+        Cursor cursor;
+        Integer id = 0;
+        ArrayList<TravelCategoryData> items = new ArrayList<TravelCategoryData>();
+        //String selectQuery = "SELECT DISTINCT Category FROM " + TABLE_TRAVELPHRASES;
+
+        //SQLiteDatabase db = this.getReadableDatabase();
+        cursor = myDataBase.query(TABLE_TRAVELPHRASES, new String[]{KEY_ID, CATEGORY, HOME_PHRASE, TRAVEL_PHRASE}, null, null, CATEGORY, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = id+1;
+                travelCategoryData = new TravelCategoryData();
+                travelCategoryData.setID(id);
+                travelCategoryData.setCategory(cursor.getString(1));
+                // Adding contact to list
+                items.add(travelCategoryData);
+            } while (cursor.moveToNext());
+        }
         // return contact
 
         return items;
     }
+
 
 }

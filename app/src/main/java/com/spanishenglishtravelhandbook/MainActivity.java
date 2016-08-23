@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity
 
     DatabaseHelper myDbHelper;
     ArrayList<TravelPhraseData> travelList;
+    ArrayList<TravelCategoryData> travelCategoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +70,12 @@ public class MainActivity extends AppCompatActivity
             throw sqle;
         }
 
-        travelList = new ArrayList<TravelPhraseData>();
-        travelList = myDbHelper.getAllTravelPhraseData();
+//        travelList = new ArrayList<TravelPhraseData>();
+//        travelList = myDbHelper.getAllTravelPhraseData();
+
+        travelCategoryList = new ArrayList<TravelCategoryData>();
+        travelCategoryList = myDbHelper.getAllCategoryData();
+
     }
 
     @Override
