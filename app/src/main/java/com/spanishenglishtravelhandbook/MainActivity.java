@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity
 
         myDbHelper = new DatabaseHelper(this);
 
+
+
         try {
 
             myDbHelper.createDataBase();
