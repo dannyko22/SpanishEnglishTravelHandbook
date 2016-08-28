@@ -184,7 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
 // to you to create adapters for your views.
 
-    // Getting single contact
+    // Getting all categories and phrases in the database
     ArrayList<TravelPhraseData> getAllTravelPhraseData() {
 
         TravelPhraseData travelPhraseData;
@@ -194,6 +194,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //SQLiteDatabase db = this.getReadableDatabase();
         cursor = myDataBase.query(TABLE_TRAVELPHRASES, new String[]{KEY_ID, CATEGORY, HOME_PHRASE, TRAVEL_PHRASE}, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                travelPhraseData = new TravelPhraseData();
+                travelPhraseData.setID(Integer.parseInt(cursor.getString(0)));
+                travelPhraseData.setCategory(cursor.getString(1));
+                travelPhraseData.setHomePhrase(cursor.getString(2));
+                travelPhraseData.setTravelPhrase(cursor.getString(3));
+                // Adding contact to list
+                items.add(travelPhraseData);
+            } while (cursor.moveToNext());
+        }
+        return items;
+    }
+
+    // Getting all categories and phrases in the database
+    ArrayList<TravelPhraseData> getTravelPhraseDatabyCategory(String _category) {
+
+        TravelPhraseData travelPhraseData;
+        Cursor cursor;
+        ArrayList<TravelPhraseData> items = new ArrayList<TravelPhraseData>();
+        //String selectQuery = "SELECT * FROM " + TABLE_TRAVELPHRASES;
+
+        //SQLiteDatabase db = this.getReadableDatabase();
+        cursor = myDataBase.query(TABLE_TRAVELPHRASES, new String[]{KEY_ID, CATEGORY, HOME_PHRASE, TRAVEL_PHRASE}, CATEGORY + "= ?", new String[]{_category}, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {

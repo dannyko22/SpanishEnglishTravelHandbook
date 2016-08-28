@@ -21,6 +21,11 @@ public class TravelCategoryData {
         this.category = category;
     }
 
+    public String getCategory()
+    {
+        return category;
+    }
+
     public void setID(Integer id)
     {
         _id = id;
