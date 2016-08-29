@@ -112,8 +112,14 @@ public class MainActivity extends AppCompatActivity
             tempTravelCategoryData = (TravelCategoryData)travelCategoryList.get(i);
             list.add(tempTravelCategoryData.getCategory());
         }
-        categoryListViewAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, list);
-        categoryListView.setAdapter(categoryListViewAdapter);
+
+
+        //categoryListViewAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, list);
+        //categoryListView.setAdapter(categoryListViewAdapter);
+
+        CategoryAdapterClass categoryAdapter = new CategoryAdapterClass(this, travelCategoryList);
+        categoryListView.setAdapter(categoryAdapter);
+
 
     }
 
