@@ -89,7 +89,7 @@ public class TravelPhraseData implements Parcelable {
 
     public String getHomePhrase()
     {
-        return travelPhrase;
+        return homePhrase;
     }
 
     @Override

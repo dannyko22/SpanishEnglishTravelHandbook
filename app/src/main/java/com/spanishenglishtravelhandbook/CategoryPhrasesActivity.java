@@ -74,8 +74,11 @@ public class CategoryPhrasesActivity extends AppCompatActivity {
             tempTravelPhraseData = (TravelPhraseData) travelPhrasesList.get(i);
             list.add(tempTravelPhraseData.getTravelPhrase());
         }
-        phraseListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, list);
-        phrasesListView.setAdapter(phraseListViewAdapter);
+        //phraseListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, list);
+        //phrasesListView.setAdapter(phraseListViewAdapter);
+
+        PhrasesAdapterClass phrasesAdapter = new PhrasesAdapterClass(this, travelPhrasesList);
+        phrasesListView.setAdapter(phrasesAdapter);
 
     }
 
