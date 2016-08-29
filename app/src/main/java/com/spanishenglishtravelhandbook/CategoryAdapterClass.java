@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -32,7 +34,8 @@ public class CategoryAdapterClass extends ArrayAdapter {
         ImageView myImage = (ImageView) row.findViewById(R.id.categoryImageView);
         TextView myCategory = (TextView) row.findViewById(R.id.categoryTextView);
 
-        myImage.setImageResource(R.drawable.aiga_departures_bg_thumb);
+        //myImage.setImageResource(R.drawable.aiga_departures_bg_thumb);
+        Picasso.with(context).load(travelCategoryData.get(position).getFilename()).into(myImage);
         myCategory.setText((CharSequence) travelCategoryData.get(position).getCategory());
 
         //return super.getView(position, convertView, parent);

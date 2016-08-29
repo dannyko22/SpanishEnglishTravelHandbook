@@ -20,6 +20,7 @@ public class TravelPhraseData implements Parcelable {
     String category;
     String homePhrase;
     String travelPhrase;
+    String filename;
 
     // constructor.  empty data.
     public TravelPhraseData(){
@@ -27,14 +28,16 @@ public class TravelPhraseData implements Parcelable {
         this.category = null;
         this.homePhrase = null;
         this.travelPhrase = null;
+        this.filename = null;
     }
 
     // constructor
-    public TravelPhraseData(int id, String category, String homePhrase, String travelPhrase){
+    public TravelPhraseData(int id, String category, String homePhrase, String travelPhrase, String filename){
         this._id = id;
         this.homePhrase = homePhrase;
         this.category = category;
         this.travelPhrase = travelPhrase;
+        this.filename = filename;
     }
 
 
@@ -43,6 +46,7 @@ public class TravelPhraseData implements Parcelable {
         category = in.readString();
         homePhrase = in.readString();
         travelPhrase = in.readString();
+        filename = in.readString();
     }
 
     public static final Creator<TravelPhraseData> CREATOR = new Creator<TravelPhraseData>() {
@@ -77,6 +81,8 @@ public class TravelPhraseData implements Parcelable {
         this.travelPhrase = _travelPhrase;
     }
 
+    public void setFilename(String _filename) {this.filename = _filename;}
+
     public String getCategory()
     {
         return category;
@@ -92,6 +98,8 @@ public class TravelPhraseData implements Parcelable {
         return homePhrase;
     }
 
+    public String getFilename() {return filename;}
+
     @Override
     public int describeContents() {
         return 0;
@@ -103,5 +111,6 @@ public class TravelPhraseData implements Parcelable {
         parcel.writeString(category);
         parcel.writeString(homePhrase);
         parcel.writeString(travelPhrase);
+        parcel.writeString(filename);
     }
 }

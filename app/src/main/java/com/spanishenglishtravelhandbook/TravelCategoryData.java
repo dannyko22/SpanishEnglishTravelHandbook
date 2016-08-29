@@ -8,6 +8,7 @@ public class TravelCategoryData {
     //private variables
     int _id;
     String category;
+    String filename;
 
     // constructor.  empty data.
     public TravelCategoryData(){
@@ -26,6 +27,11 @@ public class TravelCategoryData {
         return category;
     }
 
+    public String getFilename()
+    {
+        return filename;
+    }
+
     public void setID(Integer id)
     {
         _id = id;
@@ -35,4 +41,6 @@ public class TravelCategoryData {
     {
         this.category = _category;
     }
+
+    public void setFilename(String _filename) {this.filename = _filename; }
 }
