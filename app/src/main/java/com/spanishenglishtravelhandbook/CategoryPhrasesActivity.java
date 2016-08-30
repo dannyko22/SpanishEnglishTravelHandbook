@@ -68,12 +68,12 @@ public class CategoryPhrasesActivity extends AppCompatActivity {
     }
 
     public void populatePhrasesListView(ArrayList travelPhrasesList) {
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < travelPhrasesList.size(); ++i) {
-            TravelPhraseData tempTravelPhraseData = new TravelPhraseData();
-            tempTravelPhraseData = (TravelPhraseData) travelPhrasesList.get(i);
-            list.add(tempTravelPhraseData.getTravelPhrase());
-        }
+//        ArrayList<String> list = new ArrayList<String>();
+//        for (int i = 0; i < travelPhrasesList.size(); ++i) {
+//            TravelPhraseData tempTravelPhraseData = new TravelPhraseData();
+//            tempTravelPhraseData = (TravelPhraseData) travelPhrasesList.get(i);
+//            list.add(tempTravelPhraseData.getTravelPhrase());
+//        }
         //phraseListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, list);
         //phrasesListView.setAdapter(phraseListViewAdapter);
 

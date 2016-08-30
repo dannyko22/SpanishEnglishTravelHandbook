@@ -3,7 +3,9 @@ package com.spanishenglishtravelhandbook;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Danny on 08/05/2016.
@@ -82,9 +84,15 @@ public class NotepadData implements Parcelable {
         return body;
     }
 
-    public Date getModifiedDate()
+    public String getModifiedDate()
     {
-        return modifiedDate;
+        return getReadableModifiedDate();
+    }
+
+    public String getReadableModifiedDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - h:mm a", Locale.getDefault());
+        String displayDate = sdf.format(modifiedDate);
+        return displayDate;
     }
 
     @Override

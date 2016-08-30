@@ -1,11 +1,20 @@
 package com.spanishenglishtravelhandbook;
 
+import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class NotepadActivity extends AppCompatActivity {
+
+    NotepadDatabaseHelper notepadDBHelper;
+    NotepadData notepadData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,14 +26,48 @@ public class NotepadActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Notepad");
 
+        //setupDatabaseHelper();
 
+        //notepadDataList = new ArrayList<NotepadData>();
+        //notepadDataList = notepadDBHelper.getAllNotepadData();
 
+        Bundle data = getIntent().getExtras();
+        notepadData = data.getParcelable("notes");
 
+        setupNotepad();
 
+        Toast toast = Toast.makeText(getApplicationContext(), "Hello Javatpoint", Toast.LENGTH_SHORT);
+        toast.setMargin(50, 50);
+        toast.show();
 
     }
 
+    public void setupNotepad()
+    {
+        EditText titleEditText = (EditText)findViewById(R.id.titleEditText);
+        LinedEditText bodyEditText = (LinedEditText)findViewById(R.id.bodyEditText);
 
+        titleEditText.setText(notepadData.getTitle());
+        bodyEditText.setText(notepadData.getBody());
+    }
+
+    public void setupDatabaseHelper()
+    {
+        notepadDBHelper = new NotepadDatabaseHelper(this);
+
+        try {
+            notepadDBHelper.createDataBase();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+
+        try {
+            notepadDBHelper.openDataBase();
+        }catch(SQLException sqle){
+            throw sqle;
+        }
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //        .setAction("Action", null).show();
 
-                Intent intent = new Intent(context, NotepadActivity.class);
+                Intent intent = new Intent(context, activity_notepadrecycler.class);
                 startActivity(intent);
             }
         });
