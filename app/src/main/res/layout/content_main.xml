@@ -12,8 +12,11 @@
     tools:context="com.spanishenglishtravelhandbook.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listViewCategory" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewCategory"
+        android:scrollbars="vertical"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>

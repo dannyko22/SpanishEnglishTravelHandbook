@@ -6,6 +6,10 @@ import android.database.SQLException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,9 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,8 +29,9 @@ public class MainActivity extends AppCompatActivity
     DatabaseHelper myDbHelper;
     ArrayList<TravelPhraseData> travelList;
     ArrayList<TravelCategoryData> travelCategoryList;
-    ListView categoryListView;
-    ArrayAdapter<String> categoryListViewAdapter;
+    RecyclerView categoryRecyclerView;
+    CategoryAdapterClass categoryAdapterClass;
+    LinearLayoutManager categoryLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,38 +94,63 @@ public class MainActivity extends AppCompatActivity
     public void setupCategoryListView()
     {
         final Context context = this;
-        categoryListView = (ListView) findViewById(R.id.listViewCategory);
-        populateCategoryListView(travelCategoryList);
-        categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        categoryRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewCategory);
+        categoryRecyclerView.setHasFixedSize(true);
+        categoryLayoutManager = new LinearLayoutManager(this);
+        categoryRecyclerView.setLayoutManager(categoryLayoutManager);
+
+        final GestureDetector mGestureDetector =
+                new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        return true;
+                    }
+                });
+
+        categoryRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String category = travelCategoryList.get(i).getCategory();
-                Intent intent = new Intent(context, CategoryPhrasesActivity.class);
-                travelList = new ArrayList<TravelPhraseData>();
-                travelList = myDbHelper.getTravelPhraseDatabyCategory(category);
-                intent.putParcelableArrayListExtra("phrases", travelList);
-                startActivity(intent);
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+
+
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                    int position = recyclerView.getChildLayoutPosition(child);
+                    String category = travelCategoryList.get(position).getCategory();
+                    Intent intent = new Intent(context, CategoryPhrasesActivity.class);
+                    travelList = new ArrayList<TravelPhraseData>();
+                    travelList = myDbHelper.getTravelPhraseDatabyCategory(category);
+
+                    intent.putParcelableArrayListExtra("phrases", travelList);
+                    startActivity(intent);
+
+
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
             }
         });
+
+        populateCategoryListView(travelCategoryList);
+
     }
 
     public void populateCategoryListView(ArrayList travelCategoryList)
     {
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < travelCategoryList.size(); ++i)
-        {
-            TravelCategoryData tempTravelCategoryData = new TravelCategoryData();
-            tempTravelCategoryData = (TravelCategoryData)travelCategoryList.get(i);
-            list.add(tempTravelCategoryData.getCategory());
-        }
-
-
-        //categoryListViewAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, list);
-        //categoryListView.setAdapter(categoryListViewAdapter);
-
-        CategoryAdapterClass categoryAdapter = new CategoryAdapterClass(this, travelCategoryList);
-        categoryListView.setAdapter(categoryAdapter);
-
+        categoryAdapterClass = new CategoryAdapterClass(this, travelCategoryList);
+        categoryRecyclerView.setAdapter(categoryAdapterClass);
 
     }
 

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class NotepadActivity extends AppCompatActivity {
 
-    NotepadDatabaseHelper notepadDBHelper;
     NotepadData notepadData;
 
     @Override
@@ -26,19 +25,14 @@ public class NotepadActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Notepad");
 
-        //setupDatabaseHelper();
-
-        //notepadDataList = new ArrayList<NotepadData>();
-        //notepadDataList = notepadDBHelper.getAllNotepadData();
-
         Bundle data = getIntent().getExtras();
         notepadData = data.getParcelable("notes");
 
         setupNotepad();
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Hello Javatpoint", Toast.LENGTH_SHORT);
-        toast.setMargin(50, 50);
-        toast.show();
+//        Toast toast = Toast.makeText(getApplicationContext(), "Hello Javatpoint", Toast.LENGTH_SHORT);
+//        toast.setMargin(50, 50);
+//        toast.show();
 
     }
 
@@ -49,24 +43,6 @@ public class NotepadActivity extends AppCompatActivity {
 
         titleEditText.setText(notepadData.getTitle());
         bodyEditText.setText(notepadData.getBody());
-    }
-
-    public void setupDatabaseHelper()
-    {
-        notepadDBHelper = new NotepadDatabaseHelper(this);
-
-        try {
-            notepadDBHelper.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-
-        try {
-            notepadDBHelper.openDataBase();
-        }catch(SQLException sqle){
-            throw sqle;
-        }
-
     }
 
     @Override
