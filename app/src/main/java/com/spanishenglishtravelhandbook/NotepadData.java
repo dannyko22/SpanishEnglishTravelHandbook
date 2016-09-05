@@ -13,9 +13,9 @@ import java.util.Locale;
 public class NotepadData implements Parcelable {
 
     //private variables
-    int _id;
-    String title;
-    String body;
+    private int _id;
+    private String title;
+    private String body;
     Date modifiedDate;
 
     // constructor.  empty data.
@@ -74,6 +74,8 @@ public class NotepadData implements Parcelable {
         this.modifiedDate = _modifiedDate;
     }
 
+    public Integer getID() { return _id; }
+
     public String getTitle()
     {
         return title;
@@ -87,6 +89,11 @@ public class NotepadData implements Parcelable {
     public String getModifiedDate()
     {
         return getReadableModifiedDate();
+    }
+
+    public Date getUnModifiedDate()
+    {
+        return modifiedDate;
     }
 
     public String getReadableModifiedDate(){

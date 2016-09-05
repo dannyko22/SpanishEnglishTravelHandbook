@@ -1,19 +1,25 @@
 package com.spanishenglishtravelhandbook;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class NotepadActivity extends AppCompatActivity {
 
     NotepadData notepadData;
+    EditText titleEditText;
+    LinedEditText bodyEditText;
+    Intent previousScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +44,40 @@ public class NotepadActivity extends AppCompatActivity {
 
     public void setupNotepad()
     {
-        EditText titleEditText = (EditText)findViewById(R.id.titleEditText);
-        LinedEditText bodyEditText = (LinedEditText)findViewById(R.id.bodyEditText);
+        titleEditText = (EditText)findViewById(R.id.titleEditText);
+        bodyEditText = (LinedEditText)findViewById(R.id.bodyEditText);
 
         titleEditText.setText(notepadData.getTitle());
         bodyEditText.setText(notepadData.getBody());
+        bodyEditText.requestFocus();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
+            refreshData();
             finish(); // close this activity and return to preview activity (if there is any)
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        refreshData();
+        finish();
+    }
+
+    protected void refreshData()
+    {
+        notepadData.setTitle(titleEditText.getText().toString());
+        notepadData.setBody(bodyEditText.getText().toString());
+        Calendar calendar = Calendar.getInstance();
+        notepadData.setModifiedDate(calendar.getTime());
+        previousScreen = new Intent(this, activity_notepadrecycler.class);
+        previousScreen.putExtra("notepaddata", notepadData);
+        setResult(RESULT_OK, previousScreen);
     }
 }

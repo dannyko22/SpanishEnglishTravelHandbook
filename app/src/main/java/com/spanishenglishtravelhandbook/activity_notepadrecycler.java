@@ -23,6 +23,7 @@ public class activity_notepadrecycler extends AppCompatActivity {
     NotepadDatabaseHelper notepadDBHelper;
     ArrayList<NotepadData> notepadDataList;
     notepadRecyclerAdapter mAdapter;
+    final Integer resultCode = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class activity_notepadrecycler extends AppCompatActivity {
                     Intent intent = new Intent(context, NotepadActivity.class);
 
                     intent.putExtra("notes", selectedNoteItem);
-                    startActivity(intent);
+                    startActivityForResult(intent, resultCode );
 
 
                 }
@@ -90,6 +91,20 @@ public class activity_notepadrecycler extends AppCompatActivity {
         notepadDataList = new ArrayList<NotepadData>();
         notepadDataList = notepadDBHelper.getAllNotepadData();
         setupNotepadList();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //super.onActivityResult(requestCode, resultCode, data);
+        NotepadData _notepadData = (NotepadData) data.getParcelableExtra("notepaddata");
+        notepadDataList.get(_notepadData.getID()-1).setTitle(_notepadData.getTitle());
+        notepadDataList.get(_notepadData.getID()-1).setBody(_notepadData.getBody());
+        notepadDataList.get(_notepadData.getID()-1).setModifiedDate(_notepadData.getUnModifiedDate());
+
+        mAdapter.notifyDataSetChanged();
+        notepadDBHelper.updateNotepadData(_notepadData.getID(), _notepadData.getTitle(), _notepadData.getBody(), _notepadData.getModifiedDate());
+
     }
 
     public void setupNotepadList()
@@ -115,6 +130,7 @@ public class activity_notepadrecycler extends AppCompatActivity {
         }
 
     }
+
 
 
     @Override

@@ -1,6 +1,7 @@
 package com.spanishenglishtravelhandbook;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -13,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -151,7 +154,7 @@ public class NotepadDatabaseHelper extends SQLiteOpenHelper {
 //Open the database
         String myPath = DB_PATH + DB_NAME;
         File myFile = myContext.getDatabasePath(DB_NAME);
-        myDataBase = SQLiteDatabase.openDatabase(myFile.getPath(), null, SQLiteDatabase.OPEN_READONLY);
+        myDataBase = SQLiteDatabase.openDatabase(myFile.getPath(), null, SQLiteDatabase.OPEN_READWRITE);
 
     }
 
@@ -204,6 +207,23 @@ public class NotepadDatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public boolean updateNotepadData(Integer _id, String _title, String _body, String _date)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TITLE, _title);
+        contentValues.put(BODY, _body);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy - h:mm a");
+        Date convertedDate = new Date();
+        try {
+            convertedDate = dateFormat.parse(_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        contentValues.put(MODIFIEDDATE, convertedDate.getTime());
+
+        myDataBase.update(TABLE_NOTEPADTRAVEL, contentValues, "_id=?", new String[] { Integer.toString(_id) });
+        return true;
+    }
 
 
 
