@@ -225,6 +225,18 @@ public class NotepadDatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public Integer insertNotepadData(String _title, String _body, Date _date)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TITLE, _title);
+        contentValues.put(BODY, _body);
+        contentValues.put(MODIFIEDDATE, _date.getTime());
+
+        long _id = myDataBase.insert(TABLE_NOTEPADTRAVEL, null, contentValues);
+
+        return (int) _id;
+    }
+
 
 
 

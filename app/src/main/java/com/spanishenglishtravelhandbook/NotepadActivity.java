@@ -44,13 +44,12 @@ public class NotepadActivity extends AppCompatActivity {
 
     public void setupNotepad()
     {
-        titleEditText = (EditText)findViewById(R.id.titleEditText);
-        bodyEditText = (LinedEditText)findViewById(R.id.bodyEditText);
-
-        titleEditText.setText(notepadData.getTitle());
-        bodyEditText.setText(notepadData.getBody());
-        bodyEditText.requestFocus();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            titleEditText = (EditText) findViewById(R.id.titleEditText);
+            bodyEditText = (LinedEditText) findViewById(R.id.bodyEditText);
+            titleEditText.setText(notepadData.getTitle());
+            bodyEditText.setText(notepadData.getBody());
+            bodyEditText.requestFocus();
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override

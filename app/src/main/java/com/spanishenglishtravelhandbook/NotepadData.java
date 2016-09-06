@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -21,9 +22,9 @@ public class NotepadData implements Parcelable {
     // constructor.  empty data.
     public NotepadData(){
         this._id = -1;
-        this.title = null;
-        this.body = null;
-        this.modifiedDate = null;
+        this.title = "";
+        this.body = "";
+        this.modifiedDate = Calendar.getInstance().getTime();
     }
 
     // constructor

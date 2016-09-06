@@ -3,6 +3,7 @@ package com.spanishenglishtravelhandbook;
 import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,11 +26,27 @@ public class activity_notepadrecycler extends AppCompatActivity {
     notepadRecyclerAdapter mAdapter;
     final Integer resultCode = 1000;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_notepadrecycler);
+        final Context context = this;
+
+        FloatingActionButton notepadfab = (FloatingActionButton) findViewById(R.id.notepadfab);
+        notepadfab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
+
+                Intent intent = new Intent(context, NotepadActivity.class);
+                NotepadData _notepadData = new NotepadData();
+                intent.putExtra("notes",_notepadData);
+                startActivityForResult(intent, resultCode);
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -45,6 +62,7 @@ public class activity_notepadrecycler extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         final Context context = this;
+
 
         final GestureDetector mGestureDetector =
                 new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
@@ -64,6 +82,7 @@ public class activity_notepadrecycler extends AppCompatActivity {
                 View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
 
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+
                     int position = recyclerView.getChildLayoutPosition(child);
                     NotepadData selectedNoteItem = notepadDataList.get(position);
                     Intent intent = new Intent(context, NotepadActivity.class);
@@ -98,13 +117,22 @@ public class activity_notepadrecycler extends AppCompatActivity {
 
         //super.onActivityResult(requestCode, resultCode, data);
         NotepadData _notepadData = (NotepadData) data.getParcelableExtra("notepaddata");
-        notepadDataList.get(_notepadData.getID()-1).setTitle(_notepadData.getTitle());
-        notepadDataList.get(_notepadData.getID()-1).setBody(_notepadData.getBody());
-        notepadDataList.get(_notepadData.getID()-1).setModifiedDate(_notepadData.getUnModifiedDate());
 
+        // if this is a new entry...
+        if (_notepadData.getID().equals(-1))
+        {
+            _notepadData.setID(notepadDBHelper.insertNotepadData(_notepadData.getTitle(), _notepadData.getBody(), _notepadData.getUnModifiedDate()));
+
+            notepadDataList.add(_notepadData);
+        }
+        // if this is an existing entry, modify it.
+        else {
+            notepadDataList.get(_notepadData.getID() - 1).setTitle(_notepadData.getTitle());
+            notepadDataList.get(_notepadData.getID() - 1).setBody(_notepadData.getBody());
+            notepadDataList.get(_notepadData.getID() - 1).setModifiedDate(_notepadData.getUnModifiedDate());
+            notepadDBHelper.updateNotepadData(_notepadData.getID(), _notepadData.getTitle(), _notepadData.getBody(), _notepadData.getModifiedDate());
+        }
         mAdapter.notifyDataSetChanged();
-        notepadDBHelper.updateNotepadData(_notepadData.getID(), _notepadData.getTitle(), _notepadData.getBody(), _notepadData.getModifiedDate());
-
     }
 
     public void setupNotepadList()
