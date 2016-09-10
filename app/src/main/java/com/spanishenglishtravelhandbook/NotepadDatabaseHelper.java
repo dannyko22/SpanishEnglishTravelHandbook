@@ -237,7 +237,10 @@ public class NotepadDatabaseHelper extends SQLiteOpenHelper {
         return (int) _id;
     }
 
-
+    public int deleteNotepadData(Integer _id)
+    {
+        return myDataBase.delete(TABLE_NOTEPADTRAVEL, "_id=?", new String[] {Integer.toString(_id)});
+    }
 
 
 }
