@@ -145,6 +145,10 @@ public class activity_notepadrecycler extends AppCompatActivity {
             public void buttonViewOnClick(View v,  int position)
             {
                 Log.w("", "button" + position);
+                NotepadData _data = notepadDataList.get(position);
+                notepadDBHelper.deleteNotepadData(_data.getID());
+                notepadDataList.remove(position);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
