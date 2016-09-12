@@ -8,11 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class activity_notepadrecycler extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_notepadrecycler);
         final Context context = this;
+
+
 
         FloatingActionButton notepadfab = (FloatingActionButton) findViewById(R.id.notepadfab);
         notepadfab.setOnClickListener(new View.OnClickListener() {
@@ -61,50 +65,48 @@ public class activity_notepadrecycler extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        final Context context = this;
 
-
-        final GestureDetector mGestureDetector =
-                new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
-                    @Override
-                    public boolean onSingleTapUp(MotionEvent e) {
-                        return true;
-                    }
-                });
-
-        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-
-
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-
-
-                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-
-                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-
-                    int position = recyclerView.getChildLayoutPosition(child);
-                    NotepadData selectedNoteItem = notepadDataList.get(position);
-                    Intent intent = new Intent(context, NotepadActivity.class);
-
-                    intent.putExtra("notes", selectedNoteItem);
-                    startActivityForResult(intent, resultCode );
-
-
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
+//        final GestureDetector mGestureDetector =
+//                new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
+//                    @Override
+//                    public boolean onSingleTapUp(MotionEvent e) {
+//                        return true;
+//                    }
+//                });
+//        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+//
+//
+//            @Override
+//            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+//
+//
+//                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+//
+//
+//                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+//
+//                    int position = recyclerView.getChildLayoutPosition(child);
+//                    NotepadData selectedNoteItem = notepadDataList.get(position);
+//                    Intent intent = new Intent(context, NotepadActivity.class);
+//
+//                    intent.putExtra("notes", selectedNoteItem);
+//                    startActivityForResult(intent, resultCode );
+//
+//
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//
+//            }
+//        });
 
         setupDatabaseHelper();
         notepadDataList = new ArrayList<NotepadData>();
@@ -137,7 +139,25 @@ public class activity_notepadrecycler extends AppCompatActivity {
 
     public void setupNotepadList()
     {
-        mAdapter = new notepadRecyclerAdapter(notepadDataList, this);
+        final Context context = this;
+        mAdapter = new notepadRecyclerAdapter(notepadDataList, this, new notepadRecyclerAdapter.MyAdapterListener(){
+            @Override
+            public void buttonViewOnClick(View v,  int position)
+            {
+                Log.w("", "button" + position);
+            }
+
+            @Override
+            public void otherViewOnClick(View v, int position)
+            {
+                Log.w("", "other" + position);
+                    NotepadData selectedNoteItem = notepadDataList.get(position);
+                    Intent intent = new Intent(context, NotepadActivity.class);
+
+                    intent.putExtra("notes", selectedNoteItem);
+                    startActivityForResult(intent, resultCode );
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 
